@@ -285,7 +285,7 @@ Este projeto está licenciado sob a Licença MIT - consulte o arquivo LICENSE pa
 **Hamilton P C Reis**
 * GitHub: [@HKings](https://github.com/HKings)
 * Email: hamiltonpcreis.eng@gmail.com
-* Repositório Contact Agenda: [HKings](https://github.com/HKings)
+* Repositório Luxury Wheels: [HKings/Luxury_Wheels](https://github.com/HKings/Luxury_Wheels)
 
 ## **Agradecimentos**
 
