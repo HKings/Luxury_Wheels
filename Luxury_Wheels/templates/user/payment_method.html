@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Finalizar Reserva{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/client.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-containerReserve">
+    <h1 class="reserve_title">Método de Pagamento</h1>
+
+    <!-- Bloco para mensagens flash -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="message" class="{{ category }}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="pay-grid">
+        <!-- Resumo da Reserva - Coluna Esquerda -->
+        <div class="reservation-column">
+            <div class="reservation-summary">
+                <h2>Resumo da Reserva</h2>
+                {% for item in cart %}
+                <div class="vehicle-item">
+                    <h3>{{ item.brand }} {{ item.model }}</h3>
+                    <br>
+                    <p class="vehicle-item_periodo"><span>Período:</span> {{ item.start_date }} às {{ item.start_time }} ----> {{ item.end_date }} às {{ item.end_time }}</p>
+                    <p class="vehicle-item_duracao"> <span>Duração:</span> {% if item.days > 0 %}{{ item.days }} dia(s){% endif %}
+                        {% if item.remaining_hours > 0 %}{{ item.remaining_hours|round|int }} hora(s){% endif %}</p>
+                    <br>
+                    <p class="price-highlight">Preço: €{{ "%.2f"|format(item.total_price) }}</p>
+                </div>
+                {% endfor %}
+            </div>
+                <div class="billing-details">
+                    <h2>Dados de Faturação</h2>
+                    <p><span>Nome:</span> {{ current_user.nome }} {{ current_user.apelido }}</p>
+                    <p><span>Morada:</span> {{ current_user.morada }}</p>
+                    <p><span>NIF:</span> {{ current_user.nif }}</p>
+                </div>
+        </div>
+
+        <!-- Forma de Pagamento - Coluna Direita -->
+        <div class="payment-column">
+            <div class="payment-section">
+
+                <form action="{{ url_for('user.create_reservation') }}" method="POST" class="reservation-form">
+                    <h2>Forma de Pagamento</h2>
+                    <div class="payment-options">
+                        <div class="form-group">
+                            <input type="radio" id="mbway" name="payment_method" value="mbway" required>
+                            <label for="mbway">MBWay</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="radio" id="bank_transfer" name="payment_method" value="bank_transfer">
+                            <label for="bank_transfer">Transferência Bancária</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="radio" id="credit_card" name="payment_method" value="credit_card">
+                            <label for="credit_card">Cartão de Crédito/Débito</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="radio" id="paypal" name="payment_method" value="paypal">
+                            <label for="paypal">PayPal</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="radio" id="multibanco" name="payment_method" value="multibanco">
+                            <label for="multibanco">Multibanco</label>
+                        </div>
+                    </div>
+
+                    <div class="total_reservation">
+                        <p> <span>Sub-total:</span> {{ "%.2f"|format(total_price_no_iva) }}€</p>
+                        <p> <span>IVA (23%):</span> {{ "%.2f"|format(reserve_iva) }}€</p>
+                        <br>
+                        <p class="total-price">Total: {{ "%.2f"|format(total_price) }}€</p>
+                    </div>
+                    <div class="btn_reserve_reservation">
+                        <button type="submit" class="btn-confirm">Confirmar Pagamento</button>
+                        <a href="{{ url_for('user.confirm_reserve', id=cart[0]['vehicle_id']) }}" class="btn-cancel">Voltar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

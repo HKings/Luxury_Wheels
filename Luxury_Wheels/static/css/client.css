@@ -1,0 +1,897 @@
+@import url('static/css/base.css');
+
+/* seção de Mensagens Flash */
+
+.flash-container {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+#message {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+/* Ajuste do animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos gerais */
+
+.page-container, .page-containerReserve {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+
+.page-containerClient {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.reserve_title {
+    color: #fff;
+    font-size: 25px;
+}
+
+.centered_edt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 17px;
+}
+
+.form-group p, .form-control-static {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+.button-row {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #4caf50;
+    color: var(--white);
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 10px 20px;
+}
+
+.btn-primary:hover, .btn_edit:hover {
+    background-color: #3f6212;
+}
+
+/* **** Pág. list_vehicle **** */
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 90px; /* Margem superior */
+    padding-bottom: 100px; /* Espaço para a paginação */
+}
+
+.filters {
+    flex: 0.5;
+    margin-right: 50px;
+    margin-left: 20px;
+    position: relative;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+.reservado {
+    color: #ff6b6b;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.manutencao {
+    color: #FF8C00;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.indisponivel {
+    color: #ff4757;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.disponivel {
+    color: #2ed573;
+    font-weight: bold;
+}
+
+.vehicle-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 colunas fixas */
+    width: 100%; /* Certifica-se que o contêiner preencha a largura disponível */
+    gap: 16px;
+}
+
+.vehicle-card {
+    background-color: #FFF5EE;
+    border-radius: 10px;
+    padding: 12px;
+    width: 98%; /* Ajusta a largura para ocupar a coluna inteira */
+    box-sizing: border-box;
+    /* A display: flex; flex-direction: column; justify-content: space-between; ajuda garantir que o conteúdo dentro das caixas seja distribuído de forma consistente. */
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.5); /* sombreamento da box com rgba(color, color, color, alpha[transparencia])*/
+    max-height: 320px; /* Definindo uma altura máxima */
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+    padding-bottom: 45px;
+}
+
+.vehicle-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 2px 10px rgba(255, 140, 0, 0.5); /* Laranja escuro */
+}
+
+.vehicle-main-image {
+    max-width: 350px; /* Limitar a largura máxima da imagem */
+    max-height: 350px; /* Limitar a altura máxima da imagem */
+    object-fit: contain; /* Mantém a proporção da imagem */
+    width: auto;
+    height: auto;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.vehicle-details, .vehicle-details_conf {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dois blocos de tamanho igual */
+    gap: 20px; /* Espaço entre os blocos */
+    background-color: #FFF8DC;
+    border-radius: 5px;
+    padding: 20px;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+.vehicle-details_conf {
+    grid-template-columns: 1fr 1fr 1fr; /* Cria 3 colunas */
+    margin: 0 auto;
+}
+
+.empty-cart-message {
+    background-color: #FFF8DC;
+    border-radius: 5px;
+    padding: 20px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.last_section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #FFF8DC;
+    border-radius: 5px;
+    padding: 30px;
+    width: 80%;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; /* Alinha os itens verticalmente */
+    gap: 10px;
+    margin-bottom: 20px;
+
+}
+
+.action-buttons form {
+    margin: 0; /* Remove margens padrão do form */
+    padding: 0; /* Remove padding padrão do form */
+    background: none; /* Remove background do form */
+    box-shadow: none; /* Remove sombra do form */
+    width: auto; /* Ajusta a largura do form para o conteúdo */
+}
+
+.vehicle-details_Conf {
+    grid-template-columns: 3fr 1fr; /* Proporção 75% para conteúdo, 25% para botão */
+}
+
+.vehicle-details h2, .vehicle-details h3, .vehicle-details p {
+    text-align: center;
+}
+
+.vehicle-details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.vehicle-details .vehicle-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vehicle-details th, .vehicle-details td, .pricing-section p, .vehicle-info-section  {
+    font-size: 14px;
+}
+
+.vehicle-details h3 {
+    font-size: 18px;
+}
+
+.price-highlight {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.price-highlight, .specifications-highlight {
+    color: #D2691E;
+}
+
+.fazerReserva {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.reservation-form {
+    background-color: rgba(255,228,196, 0.4); /* #FFE4C4 com efeito de tranparência */
+    margin: 0 auto; /* Centraliza o formulário */
+}
+
+.vehicle-details .vehicle-main-image, .vehicle-main-image_conf {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    width: 350px;
+}
+
+.vehicle-main-image_conf {
+    width: 250px;
+}
+
+.reservation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.reservation-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.input-styled {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #A0522D;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.input-styled:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .vehicle-list {
+        grid-template-columns: repeat(2, 1fr); /* Para telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .vehicle-list {
+        grid-template-columns: 1fr; /* Para telas muito pequenas */
+    }
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra o conteudo horizontalmente */
+    justify-content: center; /* Centra o conteudo verticalmente */
+    width: 100%;
+}
+
+.middle-column {
+    display: flex;
+    flex-direction: column;
+    align-items: start; /* Centra o conteudo horizontalmente */
+    justify-content: center; /* Centra o conteudo verticalmente */
+    width: 100%;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column; /* Direciona os botões em coluna */
+    align-items: start;
+    gap: 10px;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.btn-edit {
+    background-color: #ffa500;
+    color: white;
+    font-size: 14px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    text-align: center;
+    width: 85px;
+    box-sizing: border-box;
+}
+
+.btn-edit:hover {
+    background-color: #ff8c00;
+}
+
+.vehicle-title {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+.vehicle-details_conf h2 {
+    font-size: 18px;
+}
+
+.reservation-details p, .middle-column p {
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.section_alert {
+    color: #D2691E;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.total-section p {
+    font-size: 15px;
+}
+
+.total-price {
+    color: #FF4500;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.btn_reserve {
+    display: flex; /* Adiciona display flex */
+    align-items: center; /* Alinha verticalmente */
+    gap: 30px; /* Adiciona espaço entre os botões */
+}
+
+.btn-remove, .btn-cancel {
+    background-color: #ff4444;
+    color: white;
+    font-size: 14px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    gap: 10px;
+}
+
+.btn-remove:hover, .btn-cancel:hover {
+    background-color: #cc0000;
+}
+
+/* Ajustes na imagem do veículo */
+.vehicle-image {
+    width: 100%;
+    height: 150px; /* Reduzindo a altura da imagem */
+    object-fit: contain;  /* Ajusta a imagem para caber dentro do contêiner, mantendo suas proporções */
+    object-position: center;
+    border-radius: 5px;
+}
+
+/* Ajustes no título do veículo */
+.vehicle-card h3 {
+    margin: 10px 0;
+    padding: 0;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.line {
+    display: flex;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    text-align: center; /* Alinha o texto ao centro */
+}
+
+.bold-inline {
+    display: inline; /* Torna o span um elemento inline */
+    font-size: 14px;
+    font-weight: bold;
+
+}
+
+.line1 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1 1 30%; /* Faz com que cada elemento ocupe uma porção do espaço disponível */
+    min-width: 50px; /* Evita que os ícones fiquem muito pequenos */
+}
+
+.vehicle-info {
+    display: flex;
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    justify-content: space-around;
+    margin-bottom: 10px;
+    gap: 10px; /* Espaçamento entre os itens */
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle; /* Alinha a imagem verticalmente ao meio do texto */
+}
+
+.price-reserve {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    margin-top: 10px;
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+}
+
+.sep {
+    border-bottom: 1px solid #ccc; /* Adiciona uma linha a baixo de cada parágrafo */
+    padding-bottom: 10px; /* Adiciona um espaço entre o texto e a linha */
+    margin-bottom: 10px;
+}
+
+.price-reserve button {
+    padding: 5px 10px;
+    font-size: 0.9em;
+}
+
+form {
+    background-color: var(--form_color); /* cor do fundo da box form */
+    border-radius: 5px; /* raio das arestas da box form */
+    padding: 20px; /* espaço o elemento a borda */
+    width: 100%; /* largura máxima */
+    margin: 10px; /* margem de 10% em cima e em baixo e, auto para as laterais */
+    margin-top: 20%; /* margem superior */
+    margin-bottom: 10%; /* margem inferior */
+    box-shadow: 6px 2px 10px rgba(0, 0, 0, 0.3); /* sombreamento da box form com rgba(color, color, color, alpha[transparencia])*/
+}
+
+input[type="text"], input[type="number"], .form-select {
+    padding: 10px; /* espaço o elemento a borda */
+    font-size: 12px; /* tamanho da fonte */
+    border-radius: 5px; /* raio das arestas */
+    margin-bottom: 10px; /* margem inferior */
+    width: 100%; /* largura */
+    box-sizing: border-box; /* faz o calculo para a largura e a altura natenham as suas dimensões */
+    border: 2px solid #ccc; /* Defina a borda do elemento com a cor de borda #ccc */
+}
+
+.btn_select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn_pesq {
+    background-color: #4caf50;
+    color: var(--white);
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 8px 15px;
+}
+
+.btn_pesq:hover, .reserv:hover, .btn_schedule:hover, .btn-confirm:hover {
+    background-color: #3f6212;
+}
+
+.btn_clear {
+    background-color: #f87171;
+    color: var(--black);
+    font-size: 11px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 8px 15px;
+}
+
+.btn_clear:hover {
+    background-color: #fca5a5;
+}
+
+.reserv, .btn_schedule, .btn-confirm {
+    background-color: #4caf50;
+    color: var(--white);
+    font-size: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 8px 15px;
+}
+
+.btn_schedule, .btn-confirm {
+    font-size: 14px;
+    padding: 8px 15px;
+}
+
+.remove-form {
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    width: auto;
+    margin: 0;
+    box-shadow: none;
+}
+
+.reserve_cart, .btn-add-more {
+    background-color: #F4A460;
+    color: var(--black);
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 8px 15px;
+}
+
+.reserve_cart:hover, .btn-add-more:hover {
+    background-color: #F5DEB3;
+}
+
+.empty-cart-icon {
+    width: 64px;
+    height: 64px;
+}
+
+.empty-cart-message p {
+    margin-bottom: 20px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+
+.notes_reserve {
+    font-size: 10.5px;
+}
+
+.attention_reserve {
+    font-size: 10.5px;
+}
+
+.attention_reserve span {
+    color: #FF4500;
+}
+
+/* ****** css para pag. payment_method ******* */
+
+.payment-column {
+    background-color: #FFF8DC;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.payment-section h2, .reservation-summary h2, .billing-details h2 {
+    font-size: 20px;
+    color: #D2691E;
+}
+
+.vehicle-item span, .billing-details span, .total_reservation span {
+    font-weight: bold;
+}
+
+.vehicle-item h3 {
+    font-size: 18px;
+}
+
+.vehicle-item_periodo, .vehicle-item_duracao, .billing-details, .total_reservation {
+    font-size: 12px;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-options .form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+}
+
+.payment-options .form-group:hover {
+    background-color: #FFF5EE;
+}
+
+.payment-options input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.payment-options label {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.reservation-summary, .billing-details {
+    background-color: #FFF8DC;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.vehicle-item {
+    background-color: #FFF8DC;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;;
+}
+
+.total_reservation {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #D2691E;
+}
+
+.btn_reserve_reservation {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.pay-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 20px;
+}
+
+/* ****** css para pag. confirmation_page ******* */
+
+.confirmation_page_details {
+    background-color: #FFF8DC;
+    border-radius: 5px;
+    padding: 20px;
+    width: 80%;
+    margin: 20px auto;
+}
+
+.client-details, .payment-details, .confirmation-summary {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #FFF5EE;
+    border-radius: 5px;
+}
+
+.vehicle_info_confirmation {
+    display: block;
+    margin: 10px 0;
+}
+
+.vehicle_info_confirmation ul {
+    list-style: none;
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.vehicle_info_confirmation li {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.confirmation_page_details h2 {
+    color: #D2691E;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.cliente_email, .cliente_tnkyou {
+    color: #D2691E;
+}
+
+.confirmation_client-details h1, .confirmation-summary h1 {
+    color: #D2691E;
+}
+
+.confirmation_page_details p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.confirmation-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-return {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-return:hover {
+    background-color: #3f6212;
+}
+
+
+/* ****** Paginação ******* */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    padding: 10px;
+    position: relative;
+    margin-bottom: 30px; /* xxpx acima do footer */
+}
+
+.pagination a, .pagination strong, .pagination span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    border: 1px solid #a1a1aa;
+    color: #525252;
+    text-decoration: none;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    background-color: #f59e0b;
+    color: #ffffff;
+    font-weight: bold;
+    border-color: #292524;
+}
+
+.pagination strong {
+    background-color: #fed7aa;
+    color: #000;
+    border-color: #fed7aa;
+}
+
+.pagination span {
+    background-color: transparent;
+    border: none;
+}
+
+.Indis {
+    font-size: 13px;
+    color: red;
+    font-weight: bold;
+}
+
+.Indis_date {
+    font-size: 11px;
+}
+
+  /* Estilo especial para botões Anterior/Próxima */
+.pagination a:first-child, .pagination a:last-child {
+    background-color: #a1a1aa;
+    padding: 0 16px;
+    font-weight: 500;
+}
+
+  /* Responsividade */
+@media (max-width: 768px) {
+    .vehicle-list {
+        grid-template-columns: repeat(2, 1fr); /* Para telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+.pagination {
+    gap: 4px;
+}
+
+
+
+@media (max-width: 480px) {
+    .vehicle-list {
+        grid-template-columns: 1fr; /* Para telas muito pequenas */
+    }
+}

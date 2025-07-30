@@ -1,0 +1,750 @@
+@import url('static/css/base.css');
+
+/* Estilos para a página Vehicles (gerenciamento de veículos) */
+
+/* Estilos gerais */
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+
+.content-wrapper {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.vehicle-section, .client-section, .admin-section,
+.home_vehicles-section, .home_client-section  {
+    background-color: var(--form_color);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: var(--white);
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+
+.button-container01 {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: flex-end; /* Alinha os botões à direita */
+    margin-top: 35px;
+    gap: 50px; /* Espaçamento entre os botões */
+    right: 100px; /* Distância da direita */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-container01 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-container h2 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+h2 {
+    color: #1a237e;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.msg_search {
+    margin-top: 20px;
+}
+
+
+/* Estilos para o formulário */
+
+
+label {
+    display: block; /* display parado / bloqueado */
+    font-size: 18px; /* tamanho da fonte */
+    margin-bottom: 5px; /* distanciamento */
+}
+
+.centered-form {
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.search-form input[type="text"], .search-form input[type="date"] {
+    width: 20%;
+    padding: 10px;
+    margin: 5px 2px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-left: 30px;
+}
+
+.centered_edt{
+    background-color: var(--form_color);
+    border-radius: 5px; /* raio das arestas da box form */
+    padding: 10px; /* espaço o elemento a borda */
+    box-shadow: 6px 2px 10px rgba(0, 0, 0, 0.3); /* sombreamento da box form com rgba(color, color, color, alpha[transparencia])*/
+    min-height: 400px; /* altura mínima */
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.form-label {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--black);
+    margin-top: 10px;
+    margin-bottom: 1px;
+    text-align: center;
+}
+
+.form-control, .form-select {
+    border: 1px solid var(--black); /* contorno da borda */
+    border-radius: 5px; /* raio da borda */
+    padding: 8px 12px; /* espaço o elemento a borda */
+    width: 100%; /* largura */
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.vehicle_filter {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    margin-top: 5px;
+    margin-bottom: 5px;
+    gap: 10px;
+
+}
+
+.form-img-container {
+    display: flex; /* Ajuda na ativação do comportamento flexível dos elementos filhos, permitindo o alinhamento e a distribuição dos itens de acordo com as propriedades do Flexbox, podenso usar o flex-direction e o align-items */
+    flex-direction: column; /* Alinha os itens verticalmente */
+    align-items: center; /* Centraliza os itens horizontalmente */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    right: 650px; /* Distância da direita */
+}
+
+.form-label_img {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--black);
+    margin-top: 20px;
+    margin-bottom: 1px;
+    text-align: center;
+}
+
+.form-img {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Cria 4 colunas de tamanho igual */
+    gap: 20px; /* Espaçamento entre os itens */
+    margin-bottom: 20px;
+}
+
+.grid-item {
+    width: 100%;
+}
+
+.card-title {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    align-items: flex-start; /* Alinha todo o conteúdo à esquerda */
+}
+
+.marca, .modelo, .ano, .categoria {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.sep {
+    border-top: 1px solid #000; /* Adiciona uma linha a cima de cada parágrafo */
+    padding-top: 10px; /* Adiciona um espaço entre o texto e a linha */
+    margin-top: 10px;
+}
+
+.form-grid.sep {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.grid-item.full-width {
+    grid-column: 1 / -1;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.vehicle-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.vehicle-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group, .form-groupDate, .form-groupImg {
+    flex: 0 0 100%;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.form-groupDate, .form-groupImg {
+    margin: 0 auto;
+}
+
+.form-group.full-width {
+    flex: 0 0 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.form-img-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Estilos para botões */
+/* Adicionar Novo Veículo_botões */
+.btn {
+    padding: 16px 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    margin-top: 20px;
+    gap: 50px; /* Espaçamento entre os botões */
+}
+
+
+
+.btn-primary, .btn-success {
+    background-color: #4caf50;
+    color: var(--white);
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 10px 20px;
+}
+
+.btn-primary:hover, .btn_edit:hover, .btn-success:hover {
+    background-color: #3f6212;
+}
+
+.btn-secondary, .btn-warning, .danger-remover {
+    background-color: #f87171;
+    color: var(--black);
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 10px 15px;
+}
+
+.btn-secondary:hover, .btn_exc:hover, .danger-remover:hover {
+    background-color: #fca5a5;
+}
+
+.btn-warning {
+    background-color: #A9A9A9;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-warning:hover {
+    background-color: #F0E68C;
+}
+
+/* Lista de Veículos_botões */
+.btn_edit{
+    padding: 16px 20px;
+}
+
+.button-container_tab {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    gap: 20px; /* Espaçamento entre os botões */
+}
+
+.btn_edit {
+    background-color: #4caf50;
+    color: var(--white);
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 10px 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.btn_exc {
+    background-color: #f87171;
+    color: var(--black);
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 10px 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* botões para a tabela gerenciamento_clientes */
+
+.btn-searchClients, .btn-searchVehicles {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+}
+
+.btn-search, .btn_clear {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 1rem;
+    border-radius: 4px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.btn-search {
+    background: #4caf50;
+    color: var(--white);
+    font-weight: bold;
+
+}
+
+.btn-search:hover {
+    background: #3f6212;
+}
+
+.btn_clear {
+    background: #f87171;
+    color: var(--black);
+}
+
+.btn_clear:hover {
+    background: #fca5a5;
+}
+
+.add-container .btn_add{
+    margin-left: 960px;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn_add {
+    background: #F4A460;
+    color: var(--black);
+    margin-left: 80px;
+}
+
+.btn_add:hover {
+    background: var(--btn_hover);
+}
+
+.home_vehicle-btn {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.header-container, .btn_backVehicles {
+    margin-left: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: #F4A460;
+    color: var(--black);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header-container01{
+    margin-left: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: var(--black);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin: 0 auto;
+}
+
+.header-container, .btn_backVehicles:hover {
+    background-color: #FFDAB9;
+}
+
+.feedback {
+    margin: 0 auto;
+
+}
+
+/* botões do admin home */
+
+.home_vehicle-btn {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn_adhome01, .btn_adhome02, .btn_adhome03, .btn_adhome04 {
+    background-color: #F4A460;
+    color: var(--black);
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    padding: 8px 15px;
+}
+
+.btn_adhome01:hover, .btn_adhome02:hover, .btn_adhome03:hover, .btn_adhome04:hover {
+    background-color: #F5DEB3;
+}
+
+
+/* Estilos para a tabela */
+.table {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-collapse: collapse; /* Garante que as bordas não se dupliquem  e que sejam um só */
+    margin-top: 15px;
+}
+
+.table thead th {
+    background-color: #f97316;
+    color: #000;
+    font-size: 13px;
+    text-transform: uppercase; /* coloca tudo em letras maiúsculas */
+    border: 1px solid #000;  /* espessura e cor das bordas */
+}
+
+.table tbody tr:hover {
+    background-color: #e8eaf6;
+}
+
+.table tbody td {
+    font-size: 12px;
+    border: 1px solid #000; /* Adiciona borda às células do corpo da tabela */
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+/* ********* Estilo para a pág. admin_home ********* */
+
+.table_vehicles, .table_clients {
+    width: 600px; /* Largura fixa de 800px */
+    margin: 15px auto; /* Centraliza a tabela horizontalmente */
+    text-align: center;
+    font-size: 14px;
+}
+
+.total_vehicles {
+    font-weight: bold;
+}
+
+
+
+
+
+
+/* ********* Estilo para a pág. edit_type ********* */
+
+h2 {
+    color: #800000;
+    font-size: 20px;
+}
+
+.rounded_container{
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    color: #333;
+}
+
+.rounded_button-container {
+    margin: 15px auto;
+    max-width: 600px;
+}
+
+/* Estilo base para o primeiro botão, atrelado as configurações de rounded_container */
+.rounded_buttons01 {
+    border: 2px solid #81c784;
+    background-color: #e8f5e9;
+}
+
+/* Estilo base para o botão rounded_buttons_img, atrelado as configurações de rounded_container */
+.rounded_buttons_img {
+    border: 2px solid #000000;
+    background-color: #D3D3D3;
+}
+
+/* Estilo para o segundo botão, atrelado as configurações de rounded_container */
+.rounded_buttons02 {
+    border: 2px solid #FFD700;
+    background-color: #FFF8DC;
+}
+
+/* Estilo para o terceiro botão, atrelado as configurações de rounded_container */
+.rounded_buttons03 {
+    border: 2px solid #FF7F50;
+    background-color: white;
+}
+
+/* Hover para o primeiro botão */
+.rounded_buttons01:hover, .rounded_buttons_img:hover {
+    background-color: #c8e6c9;
+}
+
+/* Hover para o primeiro botão */
+.rounded_buttons_img:hover {
+    background-color: #C0C0C0;
+}
+
+/* Hover para o segundo botão */
+.rounded_buttons02:hover {
+    background-color: #fde68a;
+}
+
+/* Hover para o terceiro botão */
+.rounded_buttons03:hover {
+    background-color: #FFA07A;
+}
+
+/* ********* Estilo para a pág. toggle_status ********* */
+
+.section {
+    border: 1px solid var(--black); /* contorno da borda */
+    border-radius: 5px; /* raio da borda */
+    padding: 8px 12px; /* espaço o elemento a borda */
+    width: 100%; /* largura */
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.maintenance-fields input[type="date"], .maintenance-fields input[type="time"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 5px 0;
+    width: auto;
+}
+
+.field-group {
+    margin-bottom: 15px;
+}
+
+.field-group label {
+    display: inline-block;
+    margin-right: 10px;
+    min-width: 150px;
+    font-size: 18px;
+}
+
+.button-group {
+    display: grid;
+    gap: 20px;
+}
+
+/* ********* Estilo para a pág. replace_img ********* */
+
+.hidden {
+    display: none;
+}
+.image-upload {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.selected-files {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.image-container img {
+  max-width: 200px;
+}
+
+.image-container .danger-remover {
+  position: absolute;
+  top: 5px;
+  right: 40px;
+}
+
+.table_home {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-collapse: collapse; /* Garante que as bordas não se dupliquem  e que sejam um só */
+    margin-top: 15px;
+}
+
+.table_home tbody tr:hover {
+    background-color: #e8eaf6;
+}
+
+.table_home tbody td, th {
+    font-size: 16px;
+    border: 1px solid #000; /* Adiciona borda às células do corpo da tabela */
+    color: #000;
+}
+
+#message {
+    width: 100%; /* Garante largura total */
+    max-width: 800px; /* Corresponde à largura máxima do formulário */
+    margin: 0 auto 15px; /* Centraliza e adiciona espaço inferior */
+    padding: 10px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.status-disponivel {
+    background-color: #006400;  /* Verde */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-manutencao {
+    background-color: #dc3545;  /* Vermelho */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-indisponivel, .status-reservado {
+    background-color: #ffc107;  /* Amarelo */
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Responsividade */
+
+@media (max-width: 900px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+    }
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* 1 coluna em telas muito pequenas */
+    }
+}
+
+.content-wrapper {
+    max-width: 1200px; /* Aumentei para corresponder ao formulário */
+}
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: 10px;
+    }
+
+.nav-tabs .nav-link {
+    padding: 8px 12px;
+}
+
+.table {
+    font-size: 14px;
+}
+
+
+form {
+    padding: 15px;
+}
+
+
+.form-control, .form-select {
+    max-width: 100%;
+}
+
+

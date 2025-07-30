@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Luxury Login{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login_registro.css') }}"
+      xmlns="http://www.w3.org/1999/html">
+{% endblock %}
+
+{% block content %}
+
+<!-- formulário de login do cliente-->
+<form method="POST" action="{{ url_for('auth.login') }}" autocomplete="off">
+    <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">  <!-- Adicionando o campo hidden para armazenar a URL anterior -->
+    <div class="titulo">
+        <h4>Luxury Wheels Login</h4>
+    </div>
+
+    <!-- Bloco caso exista mensagens para exibir ao utilizador -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="message" class="{{ category }}">
+                    <ul class="flashes">
+                        <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py-->
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <img src="static/img/cover-removebg3.png" alt="Luxury Wheels Image" class="img_login_register"> <!-- Img da marca -->
+    <label for="emailUtilizador">Email</label> <!-- Campo com Label -> Email -->
+    <input type="email" name="emailUtilizador" id="emailUtilizador" placeholder="Introduza o seu email" required> <!-- Campo para introduzir e-mail e é obigatório (required), que por sua vez identifica o emailcliente do label e tem um texto e indicação no placeholder (espaço reservado) -->
+    <label for="passwordCliente">Password</label> <!-- Campo com Label -> Password -->
+    <input type="password" name="passwordCliente" id="passwordCliente" placeholder="Introduza o password" required>
+    <input type="submit" value="Enter"> <!-- O submit tem um comportamento de um botão de entrada de dados-->
+    <div class="esqueceu-senha">
+        Esqueceu sua password? <a href="#">Clique aqui</a>
+        <div class="admin_login">
+            Área administrativa: <a href="{{ url_for('views.login_admin') }}">Login</a>
+        </div>
+    </div>
+    <div class="regist">
+        <a href="{{ url_for('auth.registro') }}">
+            <button type="button" class="registrar_agora" value="registrar_agora">Registrar agora</button> <!-- botão de validação e submissão de dados -->
+        </a>
+    </div>
+</form>
+
+{% endblock %}
+

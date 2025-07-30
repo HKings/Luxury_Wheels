@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}Veículos Luxury{% endblock %}
+
+{% block stylesheets %} <!-- Bloco para trazer um estilo css específico -->
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/client.css') }}">
+{% endblock %}
+
+{% block content %} <!-- Bloco de conteúdo da página -->
+
+<div class="container">
+    <div class="flash-container">
+        <!-- Bloco para exibir mensagens flash -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div id="message" class="{{ category }}">
+                        <ul class="flashes">
+                            <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+        <div class="filters"> <!-- Secção dos filtro dos veículos -->
+            <form action="{{ url_for('list_vehicle') }}" method="GET">
+                <h2>Pesquisar por:</h2>
+
+                <label for="type">Tipo de Veículo:</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="">Todos</option>
+                    {% for type in VehicleType %}
+                        <option value="{{ type.name }}" {% if tipo == type.name %}selected{% endif %}>
+                            {{ type.value }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label for="category">Categoria:</label>
+                <select id="category" name="category" class="form-select">
+                    <option value="">Todas</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="brand">Marca:</label>
+                <input type="text" id="brand" name="brand" value="{{ marca }}">
+
+                <label for="model">Modelo:</label>
+                <input type="text" id="model" name="model" value="{{ modelo }}">
+
+                <label for="seats">Assentos:</label>
+                <input type="number" id="seats" name="seats" value="{{ assentos }}" min="1">
+
+                <label for="transmission">Transmissão:</label>
+                <select id="transmission" name="transmission" class="form-select">
+                    <option value="">Todas</option>
+                    <option value="A" {% if transmissao == 'A' %}selected{% endif %}> Automático (A)</option>
+                    <option value="M" {% if transmissao == 'M' %}selected{% endif %}> Manual (M)</option>
+                </select>
+
+                <label for="price_per_day">Preço por dia (em €):</label>
+                <input type="text" id="price_per_day" name="price_per_day" value="{{ preco_dia }}">
+
+                <div class="btn_select">
+                    <button type="submit" class="btn_pesq">Pesquisar</button>
+                    <a href="{{ url_for('clear_listVehicle') }}" class="btn_clear">Limpar</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="vehicle-list">  <!--  -->
+            {% for vehicle in vehicles %} <!-- O loop for irá percorrer cada veículo na lista vehicles -->
+            <div class="vehicle-card {% if not vehicle.status or vehicle.is_in_maintenance() %}unavailable{% endif %}">  <!-- Cria um card para cada veículo. Irá também adicionar a classe CSS 'unavailable' se O veículo estiver inativo (not vehicle.status) OU se o veículo estiver em manutenção (vehicle.is_in_maintenance()) -->
+                {% if vehicle.imagens %}  <!-- Verifica se o veículo tem imagens associadas -->
+                    {% set image_paths = vehicle.get_imagens() %}  <!-- Caso tiver imagens, chama o método get_imagens() do veículo e armazena os caminhos das imagens na variável image_paths -->
+                    {% if image_paths %}  <!-- Verifica se foram encontrados caminhos de imagens válidos -->
+                        <img src="{{ url_for('static', filename=image_paths[0]) }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" class="vehicle-image">  <!-- Se houver imagens, mostra a primeira imagem (image_paths[0]). -->
+                        <!-- O url_for('static', filename=...) gera a URL correta para o arquivo na pasta static -->
+                        <!-- alt mostra a marca e modelo do veículo como texto alternativo -->
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/no-image.png') }}" alt="No image available" class="vehicle-image">  <!-- Se não houver caminhos de imagens válidos, mostra uma imagem padrão "no-image.png" -->
+                    {% endif %}
+                {% else %}
+                    <img src="{{ url_for('static', filename='img/no-image.png') }}" alt="No image available" class="vehicle-image">  <!-- Se o veículo não tiver nenhuma imagem associada (vehicle.imagens é falso), também mostra a imagem padrão -->
+                {% endif %}
+
+                    <h3 class="line"> {{ vehicle.brand }} {{ vehicle.model }} </h3>
+
+                    <div class="sep">
+                        <p> <!-- Parágrafo que permite ter somente o segundo elemento com características distintas -->
+                            Categoria: <span class="bold-inline">{{ vehicle.categoria.nome }}</span>
+                        </p>
+                    </div>
+
+                    <div class="sep">
+                        <p class="vehicle-info"> <!-- Parágrafo que permite ter os icons (png) com os respetivos valores -->
+                            <span class="line1"> <img src="{{ url_for('static', filename='img/personLW.png') }}" alt="Seats" class="icon"> {{ vehicle.seats }} </span>
+                            <span class="line1"> <img src="{{ url_for('static', filename='img/suitcaseLW.png') }}" alt="Bags" class="icon"> {{ vehicle.bags }} </span>
+                            <span class="line1"> <img src="{{ url_for('static', filename='img/transmissionLW.png') }}" alt="Transmission" class="icon"> {{ vehicle.transmission }} </span>
+                        </p>
+                    </div>
+
+                    <div class="price-reserve">
+                        <p>
+                            Preço por dia: <span class="bold-inline">{{ vehicle.price_per_day }}€</span>
+                        </p>
+                        {% if vehicle.can_reserve %}
+                            <button class="reserv" onclick="window.location.href='{{ url_for('user.reserve_vehicle', id=vehicle.id) }}'">
+                                Reservar Agora
+                            </button>
+                        {% else %}
+                            <p>
+                                {% set status, status_class = vehicle.get_availability_status() %}
+                                <span class="{{ status_class }}">{{ status }}</span><br>
+                                {% if vehicle.available_from %}
+                                     <!-- Para quando estiver 'reservado' -->
+                                    <span class="Indis_date">até {{ vehicle.available_from.strftime('%d-%m-%Y às %H:%M') }}</span>
+                                {% elif vehicle.maintenance_end %}
+                                    <span class="Indis_date">até {{ vehicle.maintenance_end.strftime('%d-%m-%Y às %H:%M') }}</span>
+                                {% endif %}
+                            </p>
+                        {% endif %}
+                    </div>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+<div class="pagination">
+    {% if pagination.has_prev %} <!-- Verifica se existe uma página anterior -->
+        <!-- Obtém o número da página anterior -->
+        <a href="{{ url_for('list_vehicle', page=pagination.prev_num, brand=marca, model=modelo, category=request.args.get('category'), seats=assentos) }}">Anterior</a>
+    {% endif %}
+
+    {% for page in pagination.iter_pages() %} <!-- pagination.iter_pages() - Gerencia a sequência de números de página -->
+        {% if page %}
+            {% if page != pagination.page %} <!-- caso (não é a página atual) - Cria um link para aquela página -->
+                <a href="{{ url_for('list_vehicle', page=page, brand=marca, model=modelo, category=request.args.get('category'), seats=assentos) }}">{{ page }}</a>
+            {% else %}
+                <strong>{{ page }}</strong> <!-- caso for a página atual - Mostra o número em negrito sem link -->
+            {% endif %}
+        {% else %}
+            <span>...</span> <!-- caso page for None - Mostra "..." indicando páginas omitidas -->
+        {% endif %}
+    {% endfor %}
+
+    {% if pagination.has_next %} <!-- Similar ao botão "Anterior", mas para a próxima página -->
+        <a href="{{ url_for('list_vehicle', page=pagination.next_num, brand=marca, model=modelo, category=request.args.get('category'), seats=assentos) }}">Próximo</a>
+    {% endif %}
+</div>
+
+{% endblock %}
+

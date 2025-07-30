@@ -1,0 +1,184 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Veículos Luxury{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %} <!-- Bloco de conteúdo da página -->
+
+<div class="page-container">
+    <h1 class="mb-4">Adicionar Veículos</h1>
+
+    <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="message" class="{{ category }}">
+                            <ul class="flashes">
+                                <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+    <div class="content-wrapper">
+        <div class="vehicle-section" id="add">
+
+            <!-- Inicia o formulário a enviar dados ao servidor de forma segura, que neste caso envia para a função vehicles no servidor -->
+            <form action="{{ url_for('admin.add_vehicles') }}" enctype="multipart/form-data" class="centered-form01" method="POST">
+                <div class="mb-3">
+                    <label for="type" class="form-label">Dados de Veículo:</label>
+                    <!-- Select é um elemento de seleção (dropdown) no HTML, que permite ao usuário escolher uma opção de uma lista -->
+                    <!-- O name="type" é referenciado em selected_type = request.form.get('type', vehicle_types[0].name), app.py -->
+                    <!-- O onchange="this.form.submit() permite que o formulário mude automaticamente quando o usuário seleciona uma nova opção -->
+                    <select id="type" name="type" class="form-control" required onchange="this.form.submit()">
+                        {% for type in vehicle_types %}
+                        <!-- O {% if type.name == selected_type %}selected{% endif %} é uma expressão condicional do jinja, que verifica se o valor de type.name é igual ao valor de selected_type, se for, a palavra selected é adicionada ao elemento <option> -->
+                            <option value="{{ type.name }}" {% if type.name == selected_type %}selected{% endif %}>
+                                {{ type.value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+
+            <form method="POST" action="{{ url_for('admin.add_vehicles') }}" class="vehicle-form" enctype="multipart/form-data">
+                <!-- Indica que o formulário está sendo submetido para atualizar a seleção de categorias com base no tipo de veículo selecionado -->
+                <input type="hidden" name="update" value="true">
+                <!-- Mantém o tipo de veículo selecionado, garantindo que essa informação seja preservada e processada corretamente no servidor -->
+                <input type="hidden" name="type" value="{{ selected_type }}">
+
+                <div class="vehicle-form-row">
+                    <div class="form-group">
+                        <label for="categoria_id" class="form-label">Categoria:</label>
+                        <select id="categoria_id" name="categoria_id" class="form-control" required>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brand" class="form-label">Marca:</label>
+                        <input type="text" id="brand" name="brand" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model" class="form-label">Modelo:</label>
+                        <input type="text" id="model" name="model" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seats" class="form-label">Assentos:</label>
+                        <input type="number" id="seats" name="seats" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bags" class="form-label">Bagagem:</label>
+                        <input type="number" id="bags" name="bags" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transmission" class="form-label">Transmissão:</label>
+                        <!-- Para assegurar que o utilizador insira apenas as letras 'm' para manual ou 'a' para automático, foi colocado o pattern="[mMaA]" para garantir as mesmas letras, e só deverá ser selecionada apenas 1 maxlength="1" -->
+                        <input type="text" id="transmission" name="transmission" class="form-control" required pattern="[mMaA]" maxlength="1">
+                        <div class="feedback">
+                            Obs: Insira apenas 'm' para manual ou 'a' para automático.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fuel_consumption" class="form-label">Consumo de combustível:</label>
+                        <input type="number" id="fuel_consumption" name="fuel_consumption" class="form-control" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year" class="form-label">Ano:</label>
+                        <input type="number" id="year" name="year" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price_per_day" class="form-label">Preço por dia (em €):</label>
+                        <!-- Por norma o type="number" aceita apenas números inteiro, no entanto com o step="0.01", permitirá que tenhamos um float -->
+                        <input type="number" id="price_per_day" name="price_per_day" class="form-control" step="0.01" required>
+                    </div>
+                </div>
+
+                <!-- Segunda secção (Status) -->
+                <div class="vehicle-form-row sep">
+                    <div class="form-group full-width">
+                        <label for="status" class="form-label">Status do Veículo:</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="active" {% if vehicle and vehicle.status %}selected{% endif %}>Ativo</option>
+                            <option value="maintenance" {% if vehicle and not vehicle.status %}selected{% endif %}>Em Manutenção</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="feedback">
+                    <p>
+                        Obs: Caso selecione "Em manutenção", por favor preenche as datas e as respectivas horas no separador a baixo.
+                    </p>
+                </div>
+
+                 <!-- Terceira secção (Datas de Manutenção) -->
+                <div class="vehicle-form-row sep">
+                    <div class="form-groupDate">
+                        <label for="maintenance_start" class="form-label">Data Início Manutenção:</label>
+                        <input type="date"
+                               class="form-control"
+                               name="maintenance_start"
+                               id="maintenance_start"
+                               value="{{ vehicle.maintenance_start|string if vehicle else '' }}"
+                               {% if vehicle and vehicle.status %}disabled style="display:none;"{% endif %}>
+                        <label for="maintenance_start_time" class="form-label mt-2">Hora Início:</label>
+                        <input type="time"
+                               class="form-control"
+                               name="maintenance_start_time"
+                               id="maintenance_start_time"
+                               value="{{ vehicle.maintenance_start.strftime('%H:%M') if vehicle and vehicle.maintenance_start else '' }}"
+                               {% if vehicle and vehicle.status %}disabled style="display:none;"{% endif %}>
+                    </div>
+
+                    <div class="form-groupDate">
+                        <label for="maintenance_end" class="form-label">Data Fim Manutenção:</label>
+                        <input type="date"
+                               class="form-control"
+                               name="maintenance_end"
+                               id="maintenance_end"
+                               value="{{ vehicle.maintenance_end|string if vehicle else '' }}"
+                               {% if vehicle and vehicle.status %}disabled style="display:none;"{% endif %}>
+                        <label for="maintenance_end_time" class="form-label mt-2">Hora Fim:</label>
+                        <input type="time"
+                               class="form-control"
+                               name="maintenance_end_time"
+                               id="maintenance_end_time"
+                               value="{{ vehicle.maintenance_end.strftime('%H:%M') if vehicle and vehicle.maintenance_end else '' }}"
+                               {% if vehicle and vehicle.status %}disabled style="display:none;"{% endif %}>
+                    </div>
+                </div>
+
+                <div class="vehicle-form-row sep">
+                    <div class="form-groupImg">
+                        <div class="form-img-container">
+                            <label for="image" class="form-label_img">Imagens do Veículo</label>
+                            <input type="file" id="image" name="image" class="form-img" multiple>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vehicle-form-row">
+                    <div class="header-container01">
+                        <a href="{{ url_for('admin.search_vehicles') }}" class="btn_backVehicles">Voltar a lista Veículos</a>
+                        <button type="submit" name="add_vehicle" class="btn btn-primary">Adicionar Veículo</button>
+                        <a href="{{ url_for('admin.add_vehicles') }}" class="btn btn-secondary me-2">Cancelar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

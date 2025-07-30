@@ -1,0 +1,100 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Editar dados Veículo{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1 class="mb-4">Editar os dados do Veículo</h1>
+
+    <form method="POST" action="{{ url_for('admin.edit_vehicle', id=veiculo.id) }}" enctype="multipart/form-data" class="centered_edt">
+        <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="message" class="{{ category }}">
+                            <ul class="flashes">
+                                <p>{{ message }}</p>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+        <div class="mb-3">
+            <label for="type" class="form-label">Tipo de Veículo:</label>
+            <select id="type" name="type" class="form-control" required>
+                {% for type in vehicle_types %}
+                    <option value="{{ type.name }}" {% if type == veiculo.type %}selected{% endif %}>
+                        {{ type.value }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria_id" class="form-label">Categoria:</label>
+            <select id="categoria_id" name="categoria_id" class="form-control" required>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}" {% if categoria.id == veiculo.categoria_id %}selected{% endif %}>
+                        {{ categoria.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="brand" class="form-label">Marca:</label>
+            <input type="text" id="brand" name="brand" class="form-control" value="{{ veiculo.brand }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="model" class="form-label">Modelo:</label>
+            <input type="text" id="model" name="model" class="form-control" value="{{ veiculo.model }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="year" class="form-label">Ano:</label>
+            <input type="number" id="year" name="year" class="form-control" value="{{ veiculo.year }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="seats" class="form-label">Assentos:</label>
+            <input type="number" id="seats" name="seats" class="form-control" value="{{ veiculo.seats }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="bags" class="form-label">Bagagem:</label>
+            <input type="number" id="bags" name="bags" class="form-control" value="{{ veiculo.bags }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="transmission" class="form-label">Transmissão:</label>
+            <input type="text" id="transmission" name="transmission" class="form-control" value="{{ veiculo.transmission }}" required pattern="[mMaA]" maxlength="1">
+            <div class="feedback">
+                Obs: Insira apenas 'm' para manual ou 'a' para automático.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="fuel_consumption" class="form-label">Cons. combustível:</label>
+            <input type="number" id="fuel_consumption" name="fuel_consumption" class="form-control" value="{{ veiculo.fuel_consumption }}" step="0.01"  required>
+        </div>
+
+        <div class="mb-3">
+            <label for="price_per_day" class="form-label">Preço por dia (em €):</label>
+            <input type="number" id="price_per_day" name="price_per_day" class="form-control" value="{{ veiculo.price_per_day }}" step="0.01" required>
+        </div>
+
+        <br><br>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Atualizar Veículo</button>
+            <a href="{{ url_for('admin.edit_type', id=veiculo.id) }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

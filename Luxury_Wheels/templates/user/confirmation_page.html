@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Página de Confirmação{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/client.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-containerReserve">
+    <h1 class="reserve_title">Reserva Concluida</h1>
+    <!-- Bloco para exibir mensagens flash -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="message" class="{{ category }}">
+                    <ul class="flashes">
+                        <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="confirmation_page_details">
+        <!-- Detalhes do Cliente -->
+        <div class="confirmation_client-details">
+            <h1>Dados da Faturação</h1>
+            <p><strong>Reserva em nome de:</strong> {{ cliente.nome }} {{ cliente.apelido }}</p>
+            <p><strong>NIF:</strong> {{ cliente.nif }}</p>
+            <p><strong>Contato:</strong> {{ cliente.telefone }}</p>
+        </div>
+
+        <!-- Detalhes da Reserva -->
+        <div class="confirmation-summary">
+            <h1>Detalhes da Reserva</h1>
+            {% for reservation in reservations %}
+                {% set vehicle = vehicles[reservation.veiculo_id] %}
+            <div class="vehicle_info_confirmation">
+                <h2>Veículo {{ loop.index }}</h2>
+                <p><strong>Veículo:</strong> {{ vehicle.brand }} {{ vehicle.model }}</p>
+                <p><strong>Tipo de Veículo:</strong> {{ vehicle.type.value if vehicle.type.value else vehicle.type }}</p>
+                <p><strong>Assentos:</strong> {{ vehicle.seats }} lugares</p>
+                <p><strong>Bagagem:</strong> {{ vehicle.bags }}</p>
+                <p><strong>Transmissão:</strong> {{ vehicle.transmission }}</p>
+                <p><strong>Ano:</strong> {{ vehicle.year }}</p>
+                <p><strong>Período da Reserva:</strong></p>
+                <ul>
+                    <li><strong>Data de Levantamento:</strong> {{ reservation.start_date.strftime('%d-%m-%Y') }} às {{ reservation.start_time }}</li>
+                    <li><strong>Data de Devolução:</strong> {{ reservation.end_date.strftime('%d-%m-%Y') }} às {{ reservation.end_time }}</li>
+                </ul>
+                <p><strong>Duração:</strong> {{ "%.1f"|format(reservation.duration/24) }} dias</p>
+                <p><strong>Total:</strong> {{ "%.2f"|format(reservation.price) }} €</p>
+            </div>
+            {% if not loop.last %}<hr>{% endif %}
+            {% endfor %}
+            <br>
+            <p><strong>Método de pagamento:</strong> {{ reservations[0].payment_method }}.</p><br>
+            <p>* O comprovativo da reserva assim como a descrição do mesmo foram enviados para o seguinte e-mail:<strong class="cliente_email"> {{ cliente.email }}</strong></p>
+            <br>
+            <br>
+            <p class="cliente_tnkyou"><strong>Obrigado!</strong> Volte sempre!</p>
+        </div>
+        <div class="confirmation-actions">
+            <a href="{{ url_for('home') }}" class="btn-return">Voltar a Página Inicial</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

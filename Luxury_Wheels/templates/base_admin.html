@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Título Padrão{% endblock %}</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon/favicon-96x96.png') }}">
+    <!-- Fontes do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- Folha de estilo (base.CSS) -->
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% endblock %}
+</head>
+<body>
+    <header class="header01">
+        <nav class="navbar">
+            <div class="nav-logo">
+                <a href="/">  <!-- logo com link para ir ao ínicio da pág. -->
+                    <img src="{{ url_for('static', filename='img/default1.png') }}" alt="Luxury Wheels Image" width="20%" style="vertical-align: middle;">
+                </a>
+
+            </div>
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin %}
+                    <ul class="nav-links">
+                        <li class="link"><a href="{{ url_for('admin.admin_home') }}" class="cabecalho">Admin Home</a></li>
+                        {% if request.endpoint != 'admin.clients' %} <!-- Se o pedido for diferente de 'admin.clients' o link Lista Clientes aparecerá no cabeçalho, caso for igual o link será ocultado -->
+                        <li class="link"><a href="{{ url_for('admin.clients') }}" class="cabecalho">Lista Clientes</a></li>
+                        {% endif %}
+                        {% if request.endpoint != 'admin.search_vehicles' %} <!-- Se o pedido for diferente de 'admin.search_vehicles' o link Lista Veículos aparecerá no cabeçalho, caso for igual o link será ocultado -->
+                        <li class="link"><a href="{{ url_for('admin.search_vehicles') }}" class="cabecalho">Lista Veículos</a></li>
+                        {% endif %}
+                        <li class="link"><a href="{{ url_for('list_vehicle') }}" class="cabecalho">Ver Veículos p/ Aluguer</a></li>
+                    </ul>
+                        <div class="logout_icon"> <!-- icon logout -->
+                            <a href="{{ url_for('auth.logout') }}">
+                                <img width="24" height="24" src="https://img.icons8.com/?size=100&id=kA1US8k7toqM&format=png&color=ffffff">
+                            </a>
+                        </div>
+                {% endif %}
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Bloco de conteúdo das páginas -->
+    <div class="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-social">
+                <h4>Siga-nos</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link"><img width="24" height="24" src="https://img.icons8.com/material-sharp/24/ffffff/facebook-new.png" alt="facebook"></a>
+                    <a href="#" class="social-link"><img width="24" height="24" src="https://img.icons8.com/material-sharp/24/ffffff/instagram-new.png" alt="instagram"></a>
+                    <a href="#" class="social-link"><img width="24" height="24" src="https://img.icons8.com/material-sharp/24/ffffff/twitter.png" alt="twitter"></a>
+                    <a href="#" class="social-link"><img width="24" height="24" src="https://img.icons8.com/material-sharp/24/ffffff/linkedin.png" alt="linkedin"></a>
+                </div>
+            </div>
+
+            <div class="footer-copyright">
+                <p>©2025 <span>Luxury Wheels</span></p>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contactos</h4>
+                <p>Tel: +351 2xx xxx 582</p>
+                <p>Email: info@luxurywheels.com</p>
+                <p>Morada: Rua Pomba Dourada, 123 BL3</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Script do JS com propósito de estabelecer um intervalo de tempo das mensagem pop-up -->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const messageElement = document.getElementById('message');  // Esta linha vai buscar o id="message" da mensagem flash
+            if (messageElement) {
+                messageElement.style.display = 'block';
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                }, 5000);     // Esconde a mensagem após 5 segundos
+            }
+        });
+    </script>
+</body>
+</html>

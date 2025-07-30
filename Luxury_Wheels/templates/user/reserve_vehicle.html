@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Agendar reserva{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/client.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-containerReserve">
+    <h1 class="reserve_title">Agendar Reserva</h1>
+        <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="message" class="{{ category }}">
+                            <ul class="flashes">
+                                <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+    <div class="vehicle-details">
+
+        <div class="vehicle-image-section">
+            <div class="vehicle-info-section">
+                <h2>{{ vehicle.brand }} {{ vehicle.model }}</h2>
+            </div>
+            {% if vehicle.imagens %}
+                {% set image_paths = vehicle.get_imagens() %}
+                {% if image_paths %}
+                    <img src="{{ url_for('static', filename=image_paths[0]) }}" class="vehicle-main-image">
+                {% else %}
+                    <img src="{{ url_for('static', filename='img/no-image.png') }}" alt="No image available" class="vehicle-main-image">
+                {% endif %}
+            {% else %}
+                <img src="{{ url_for('static', filename='img/no-image.png') }}" alt="No image available" class="vehicle-main-image">
+            {% endif %}
+            <br>
+
+            <div class="vehicle-specifications">
+                <h3>Especificações do Veículo</h3>
+                <table>
+                    <tr>
+                        <th>Categoria:</th>
+                        <td class="specifications-highlight">{{ vehicle.categoria.nome }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tipo de veículo:</th>
+                        <td class="specifications-highlight">{{ vehicle.type.value }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ano:</th>
+                        <td class="specifications-highlight">{{ vehicle.year }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nº de Assentos:</th>
+                        <td class="specifications-highlight">
+                            {{ vehicle.seats }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Nº de Bagagem:</th>
+                        <td class="specifications-highlight">
+                            {{ vehicle.bags }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Transmissão:</th>
+                        <td class="specifications-highlight">
+                            {{ vehicle.transmission }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Consumo de Combustível:</th>
+                        <td class="specifications-highlight">{{ vehicle.fuel_consumption }} L/100km</td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+
+            <div class="pricing-section">
+                <h3>Detalhes de Preço</h3>
+                <p>Preço por dia: <span class="price-highlight">{{ vehicle.price_per_day }}€</span></p>
+            </div>
+        </div>
+
+        <!-- Reservation Form -->
+        <form action="{{ url_for('user.reserve_vehicle', id=vehicle.id, edit=is_editing) }}" method="POST" class="reservation-form">
+            <p class="fazerReserva">Datas da Reserva</p><br>
+
+            <div class="reservation-grid">
+                <div class="reservation-column">
+                    <div class="form-group">
+                        <label for="start_date">Data de Levantamento:</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ edit_data.start_date if edit_data else '' }}" required class="input-styled">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start_time">Hora de Levantamento:</label>
+                        <input type="time" id="start_time" name="start_time" value="{{ edit_data.start_time if edit_data else '' }}" required class="input-styled">
+                    </div>
+                </div>
+
+                <div class="reservation-column">
+                    <div class="form-group">
+                        <label for="end_date">Data de Devolução:</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ edit_data.end_date if edit_data else '' }}" required class="input-styled">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end_time">Hora de Devolução:</label>
+                        <input type="time" id="end_time" name="end_time" value="{{ edit_data.end_time if edit_data else '' }}" required class="input-styled">
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            {% if is_editing %}
+            <div class="attention_reserve">
+                <p><span><strong>Atenção:</strong></span> Está no modo de edição. Por favor escolha a opção <span>"Concluir Alteração"</span> ou <span>"Cancelar"</span> para prosseguir.
+                    Se pretender <span>adicionar veículos</span> conclua esta operação, caso contrário, <span>o novo veículo substituirá o existente</span> desta edição.</p>
+            </div>
+            {% else %}
+
+            {% endif %}
+            <br>
+            <div class="btn_reserve">
+                <button type="submit" class="btn_schedule">
+                    {% if is_editing %}
+                        Concluir Alteração
+                    {% else %}
+                        Agendar a Reserva
+                    {% endif %}
+                </button>
+
+                {% if is_editing %}
+
+                {% else %}
+                <a href="{{ url_for('user.view_cart', id=vehicle.id, edit=is_editing, action='view_cart') }}" class="reserve_cart">Ver Reserva</a>
+                {% endif %}
+
+                <a href="{{ url_for('user.reserve_vehicle', id=vehicle.id, edit=is_editing, action='cancel') }}" class="btn-cancel">
+                    {% if is_editing %}
+                        Cancelar
+                    {% else %}
+                        Limpar
+                    {% endif %}
+                </a>
+            </div>
+            <br>
+            <br>
+            {% if is_editing %}
+
+            {% else %}
+            <div class="notes_reserve">
+                <p><strong>Nota:</strong> Na primeira 24h a reserva é paga na totalidade do preço do dia no valor de {{ vehicle.price_per_day }}€ mais IVA em vigor. À partir da 25ª hora será cobrado por hora de reserva.</p>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

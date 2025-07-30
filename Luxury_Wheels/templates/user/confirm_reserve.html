@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Reserva{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/client.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-containerReserve">
+    <h1 class="reserve_title">Veículos adicionados</h1>
+    <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="message" class="{{ category }}">
+                            <ul class="flashes">
+                                <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+    <!-- Verificação para carrinho/veículo vazio -->
+    {% if not cart and not (vehicle and start_date and end_date) %}
+        <div class="empty-cart-message">
+            <img src="{{ url_for('static', filename='img/icons8-empty-64.png') }}" alt="Nothing Found" class="empty-cart-icon">
+            <p>Não existe Itens no carrinho!</p>
+            <a href="{{ url_for('list_vehicle') }}" class="btn-add-more">Ver Veículos Disponíveis</a>
+        </div>
+
+   {% elif cart %}
+        {% for item in cart %}
+        <div class="vehicle-details_conf">
+            <div class="left-column">
+                <h2 class="vehicle-title">{{ item.brand }} {{ item.model }}</h2>
+
+                <div class="vehicle-image-section">
+                    {% if item.imagens %}
+                        <img src="{{ url_for('static', filename=item.imagens[0]) }}" class="vehicle-main-image_conf">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/no-image.png') }}" alt="No image available" class="vehicle-main-image_conf">
+                    {% endif %}
+                </div>
+
+                <div class="reservation-details">
+                    <p><strong>Data de Levantamento:</strong><span class="section_alert"> {{ item.start_date }} às {{ item.start_time }}</span></p>
+                    <p><strong>Data de Devolução:</strong><span class="section_alert"> {{ item.end_date }} às {{ item.end_time }}</span></p>
+                    <p><strong>Período da Reseva:</strong> {{ item.days }} dia(s) e {{ "%.2f"|format(item.remaining_hours) }} hora(s)</p>
+                </div>
+            </div>
+
+            <div class="middle-column">
+                <p><strong>Preço por dia:</strong> {{ item.price_per_day }}€</p>
+                <p><strong>IVA associado:</strong> {{ "%.2f"|format(item.reserve_iva) }}€</p>
+                <p><strong>Total da Reserva:</strong><span class="section_alert"> {{ "%.2f"|format(item.total_price) }}€</span></p>
+            </div>
+
+            <div class="right-column">
+                <a href="{{ url_for('user.reserve_vehicle', id=item.vehicle_id, edit='true') }}" class="btn-edit">Editar</a>
+                <form action="{{ url_for('user.remove_from_cart', vehicle_id=item.vehicle_id) }}" method="POST" class="remove-form">
+                    <button type="submit" class="btn-remove">Remover</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="last_section">
+            <div class="total-section">
+                <p><strong>Total de veículos:</strong> {{ total_vehicles }}</p>
+                <p><strong>Total à Pagar:</strong><span class="total-price"> {{ "%.2f"|format(total_price) }}€</span></p>
+            </div>
+            <div class="action-buttons">
+                <a href="{{ url_for('list_vehicle') }}" class="btn-add-more">Adicionar mais veículos</a>
+                <a href="{{ url_for('user.payment_method') }}" class="btn-confirm">Continuar</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

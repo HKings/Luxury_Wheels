@@ -1,0 +1,139 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Admin Home{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1 class="mb-4">Área Administrativa</h1>
+
+    <div id="vehicle-list-top">
+        <div class="vehicles-section" id="list_vehicles">
+
+            <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="message" class="{{ category }}">
+                            <ul class="flashes">
+                                <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="home_vehicles-section">
+                <!-- Vehicle Table -->
+                <h2>Tabela Resumo dos Veículos</h2>
+                <table class="table_vehicles">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Veículo</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Carros</td>
+                            <td>{{ car_count }}</td>
+                        </tr>
+                        <tr>
+                            <td>Motas</td>
+                            <td>{{ motorcycle_count }}</td>
+                        </tr>
+                        <tr class="total_vehicles">
+                            <td>Total dos Veículos</td>
+                            <td>{{ total_vehicles }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Vehicle Available Table -->
+                <br><br>
+                <h2>Tabela Resumo das Disponibilidade dos Veículos</h2>
+                <table class="table_vehicles">
+                    <thead>
+                        <tr>
+                            <th>Disponibilidade dos Carros</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Carros Disponíveis</td>
+                            <td>{{ cars_available }}</td>
+                        </tr>
+                        <tr>
+                            <td>Carros Reservados</td>
+                            <td>{{ cars_reserved }}</td>
+                        </tr>
+                        <tr>
+                            <td>Carros Indisponíveis</td>
+                            <td>{{ cars_unavailable }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table_vehicles">
+                    <thead>
+                        <tr>
+                            <th>Disponibilidade das Motos</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Motos Disponíveis</td>
+                            <td>{{ motorcycle_available }}</td>
+                        </tr>
+                        <tr>
+                            <td>Motos Reservados</td>
+                            <td>{{ motorcycle_reserved }}</td>
+                        </tr>
+                        <tr>
+                            <td>Motos Indisponíveis</td>
+                            <td>{{ motorcycle_unavailable }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <div class="home_vehicle-btn">
+                    <a href="{{ url_for('admin.search_vehicles') }}" class="btn_adhome01">Ir a lista Veículos</a>
+                    <a href="{{ url_for('admin.add_vehicles') }}" class="btn_adhome02">Adicionar Veículos</a>
+                    <a href="{{ url_for('admin.search_vehicles') }}" class="btn_adhome03">Pesquisar Veículos</a>
+                </div>
+            </div>
+
+            <div class="home_client-section">
+                <!-- Client Table -->
+                <h2>Tabela Resumo dos Clientes</h2>
+                <table class="table_clients">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Clientes Cadastrados</td>
+                            <td>{{ total_clients }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="home_vehicle-btn">
+                    <a href="{{ url_for('admin.clients') }}" class="btn_adhome04">Ir a lista Clientes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Veículos Luxury{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %} <!-- Bloco de conteúdo da página -->
+<div class="page-container">
+    <h1 class="mb-4">Gerenciamento dos Veículos</h1>
+
+    <!-- Bloco para exibir mensagens flash -->
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div id="message" class="{{ category }}">
+                                    <ul class="flashes">
+                                        <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+    <div class="vehicle-section" id="list">
+
+        <div id="vehicle-list-top">
+
+            <div class="vehicles-section" id="list_vehicles">
+                <form method="GET" action="{{ url_for('admin.search_vehicles') }}">
+
+                    <div class="vehicle_filter">  <!-- Class para criar estilo css na 1ª camada -->
+                        <select id="type" name="type" class="form-select">
+                            <option value="">Pesquisar Tipo</option>
+                            {% for type in VehicleType %}
+                                <option value="{{ type.name }}" {% if tipo == type.name %}selected{% endif %}>
+                                    {{ type.value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <select id="categoria" name="categoria" class="form-select">
+                            <option value="">Pesquisar Categoria</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.nome }}" data-type="{{ categoria.tipo_veiculo.name }}" {% if categoria.nome == categoria %}selected{% endif %}>
+                                    {{ categoria.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="vehicle_filter">  <!-- Class para criar estilo css na 2ª camada -->
+                        <input type="text" name="brand" placeholder="Pesq. Marca" value="{{ marca }}" class="form-select">
+                        <input type="text" name="model" placeholder="Pesq. Modelo" value="{{ modelo }}" class="form-select">
+                        <input type="number" name="year"+ placeholder="Pesq. Ano" value="{{ ano }}" class="form-select">
+                        <input type="text" name="transmission" placeholder="Pesq. Transmissão" value="{{ transmission }}" class="form-select">
+                        <input type="number" name="seats" placeholder="Pesq. Assentos" value="{{ seats }}" class="form-select">
+                        <input type="number" name="bags" placeholder="Pesq. Bagagem" value="{{ bags }}" class="form-select">
+                        <input type="number" name="price_per_day" placeholder="Pesq. Preço dia" value="{{ preco_dia }}" step="0.01" class="form-select">
+                    </div>
+                    <div class="btn-searchVehicles">
+                        <button type="submit" class="btn-search">Pesquisar</button>
+                        <a href="{{ url_for('admin.clear_vehicle') }}" class="btn_clear">Limpar Pesquisa</a>
+                    </div>
+                    <div class="add-container">
+                        <a href="{{ url_for('admin.add_vehicles') }}" class="btn_add">Adicionar Veículos</a>
+                    </div>
+                </form>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Categoria</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Ano</th>
+                        <th>Assentos</th>
+                        <th>Bagagem</th>
+                        <th>Transmissão</th>
+                        <th>Cons. combustível</th>
+                        <th>Preço por dia</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for veiculo in veiculos %}
+                        <tr>
+                            <td>{{ veiculo.type.value }}</td>
+                            <td>{{ veiculo.categoria.nome }}</td>
+                            <td>{{ veiculo.brand }}</td>
+                            <td>{{ veiculo.model }}</td>
+                            <td>{{ veiculo.year }}</td>
+                            <td>{{ veiculo.seats }}</td>
+                            <td>{{ veiculo.bags }}</td>
+                            <td>{{ veiculo.transmission }}</td>
+                            <td>{{ veiculo.fuel_consumption }}</td>
+                            <td>{{ veiculo.price_per_day }}</td>
+                            {% set status_alert, status_colorAlert = veiculo.get_availability_status() %}
+                            <td>
+                                {% if status_alert == "Disponível" %}
+                                    <span class="status-disponivel">{{ status_alert }}</span>
+                                {% elif status_alert == "Em Manutenção" %}
+                                    <span class="status-manutencao">{{ status_alert }}</span>
+                                {% else %}
+                                    <span class="status-indisponivel">{{ status_alert }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="button-container_tab">
+                                    <a href="{{ url_for('admin.edit_type', id=veiculo.id) }}" class="btn_edit">Editar</a>
+                                    <form action="{{ url_for('admin.delete_vehicle', id=veiculo.id) }}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn_exc" onclick="return confirm('Tem certeza que deseja excluir este veículo?');">Excluir</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

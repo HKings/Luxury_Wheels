@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Luxury Wheels{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+
+    <!-- Bloco caso exista mensagens para exibir ao utilizador -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="message" class="{{ category }}">
+                    <ul class="flashes">
+                        <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py-->
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="home">
+        <div class="content_anunc">
+            <h3>Neste <span>VERÃO</span> aproveite as melhores <span>campanhas</span> da Luxury Wheels ⛱️🚗</h3>
+            <p>Confira na sua página Luxury Wheels as melhores campanhas que te levarão a uma viagem inesquecível para aquelas férias em família que tanto sonhaste.</p>
+            <a href="list_vehicle">
+                <button type="button" class="confira">Ver Veículos</button>
+            </a>
+        </div>
+    </section>
+</div>
+
+<div class="sobreNos-container">
+    <section class="sobreNos-section">
+        <div class="content_sobreNos" id="sobre_nos">
+            <h2>Sobre <span>Nós</span></h2>
+            <p>
+                A Luxury Wheels é uma empresa dedicada para...
+            </p>
+        </div>
+        <div class="sobreNos_img">
+                <img src="static/img/chuttersnap-gts_Eh4g1lk-unsplash.jpg">
+        </div>
+    </section>
+</div>
+
+
+{% endblock %}
+

@@ -1,0 +1,55 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Tipo de Edição{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1 class="mb-4">Tipo de Edição</h1>
+
+    <form method="POST" action="{{ url_for('admin.toggle_vehicle_status', id=vehicle.id) }}" class="centered_edt">
+
+        <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="message" class="{{ category }}">
+                            <ul class="flashes">
+                                <p>{{ message }}</p>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+        <p class="card-title">
+            <span class="desc">Marca: <span class="marca">{{ vehicle.brand }}</span></span>
+            <span class="desc">Modelo: <span class="modelo">{{ vehicle.model }}</span></span>
+            <span class="desc">Categoria: <span class="categoria">{{ vehicle.categoria.nome }}</span></span>
+            <span class="desc">Ano: <span class="ano">{{ vehicle.year }}</span></span>
+        </p><br><br>
+
+        <h2 class="titulo_h2">Selecione o tipo de edição</h2>
+         <div class="rounded_button-container">
+            <a href="{{ url_for('admin.edit_vehicle', id=vehicle.id) }}" class="rounded_container rounded_buttons01">Editar os dados do veículo</a>
+        </div>
+
+        <div class="rounded_button-container">
+            <a href="{{ url_for('admin.replace_img', id=vehicle.id) }}" class="rounded_container rounded_buttons_img">Editar a imagem do veículo</a>
+        </div>
+
+        <div class="rounded_button-container">
+            <a href="{{ url_for('admin.toggle_vehicle_status', id=vehicle.id) }}" class="rounded_container rounded_buttons02">Alterar o Status do veículo</a>
+        </div>
+        <div class="rounded_button-container">
+            <a href="{{ url_for('admin.search_vehicles') }}" class="rounded_container rounded_buttons03">Voltar a Lista dos Veículos</a>
+        </div>
+    </form>
+
+
+</div>
+{% endblock %}

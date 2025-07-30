@@ -1,0 +1,39 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Admin_Login{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_registro.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- formulário de login do Administrador -->
+<form method="POST" action="{{ url_for('auth.login_admin') }}" autocomplete="off">
+    <div class="titulo">
+        <!-- Bloco caso exista mensagens para exibir ao utilizador -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="message" class="{{ category }}">
+                    <ul class="flashes">
+                        <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py-->
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+        <h4>Login do Administrador</h4>
+    </div>
+
+    <img src="static/img/mechanic.png" alt="Luxury Wheels AdminLogin_Image" class="img_login_admin">
+    <label for="username">Username</label> <!-- Campo com Label -> username -->
+    <input type="text" name="username" id="username" placeholder="username" required> <!-- Campo para introduzir o username -->
+    <label for="password">Password</label> <!-- Campo com Label -> Password -->
+    <input type="password" name="password" id="password" placeholder="Password" required>
+    <input type="submit" value="Enter"> <!-- O submit tem um comportamento de um botão de entrada de dados-->
+</form>
+
+{% endblock %}

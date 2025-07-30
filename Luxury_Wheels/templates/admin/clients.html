@@ -1,0 +1,75 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Clientes{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1 class="mb-4">Gerenciamento dos Clientes</h1>
+    <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="message" class="{{ category }}">
+                            <ul class="flashes">
+                                <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py -->
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+    <div class="client-section" id="list">
+        <form method="GET" action="{{ url_for('admin.clients') }}" class="search-form"> <!-- faz a ponte com a função def clients() em app.py (Pesquisar clientes) e utiliza o método GET-->
+            <input type="text" name="nome" placeholder="Pesquisar Nome" value="{{ nome }}">
+            <input type="text" name="apelido" placeholder="Pesquisar Apelido" value="{{ apelido }}">
+            <input type="date" name="data_nascimento" placeholder="Pesquisar Data de Nascimento" value="{{ data_nascimento }}">
+            <input type="text" name="nif" placeholder="Pesquisar NIF" value="{{ nif }}">
+            <div class="btn-searchClients">
+                <button type="submit" class="btn-search">Pesquisar</button>
+                <a href="{{ url_for('admin.clear_search') }}" class="btn_clear">Limpar Pesquisa</a>
+            </div>
+        </form>
+        <!-- Tabela clientes -->
+        <table id="clientesTable" class="table">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Apelido</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Data de Nascimento</th>
+                <th>Morada</th>
+                <th>NIF</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.apelido }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <td>{{ cliente.data_nascimento.strftime('%d/%m/%Y') if cliente.data_nascimento else '' }}</td>
+                    <td>{{ cliente.morada }}</td>
+                    <td>{{ cliente.nif }}</td>
+                    <td>
+                        <div class="button-container_tab">
+                            <a href="{{ url_for('admin.edit_clients', id=cliente.id) }}" class="btn_edit">Editar</a>
+                            <form action="{{ url_for('admin.delete_client', id=cliente.id) }}" method="POST" style="display: inline;">
+                                <button type="submit" class="btn_exc" onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Apagar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

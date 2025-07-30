@@ -1,0 +1,24 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+
+     <!-- Bloco caso exista mensagens para exibir ao utilizador -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="message" class="{{ category }}">
+                    <ul class="flashes">
+                        <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py-->
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h1>Admin</h1>
+
+
+
+{% endblock %}

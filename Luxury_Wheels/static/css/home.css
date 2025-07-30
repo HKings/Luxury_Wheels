@@ -1,0 +1,234 @@
+
+@import url('static/css/base.css');
+
+
+
+.confira {
+    background: var(--bottom_01);
+    color: var(--black);
+    padding: 1rem 3rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.5); /* sombreamento da box com rgba(color, color, color, alpha[transparencia])*/
+}
+
+.confira:hover {
+    background: var(--btn_hover);
+    font-size: 1.65rem;
+    padding: 1.05rem 3.05rem;
+}
+
+.home-container {
+    background-image: url("/static/img/mustang.jpeg");
+    background-size: cover; /* Ajusta a imagem para cobrir todo o elemento */
+    background-repeat: no-repeat; /* Evita repetição da imagem */
+    background-position: center center; /* Centraliza a imagem */
+    margin-top: 60px;
+    height: 110vh; /* apanha a tela toda */
+}
+
+.home-container section {
+    display: flex;
+    min-height: 110vh;
+}
+
+.content_anunc{
+    max-width: 1200px;
+    padding: 5rem 2rem;
+}
+
+.content_anunc h3{
+    color: var(--white);
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.content_anunc p{
+    color: var(--white);
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.5;
+    padding: 1rem 0;
+
+}
+
+.content_anunc h3 span{ /* efeito transparente no interior e com bordas */
+    -webkit-text-fill-color: transparent; /* transparência do elemento */
+    -webkit-text-stroke: 1px #fff; /* espessura do contorno */
+}
+
+
+.sobreNos-container {
+    padding-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 2rem;
+}
+
+.content_sobreNos {
+    max-width: 1200px;
+    padding: 1rem 2rem;
+}
+
+.content_sobreNos h2{
+    color: var(--white);
+    font-size: 3.5rem;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+}
+
+.content_sobreNos p{
+    color: var(--white);
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.5;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.content_sobreNos h2 span{
+    color: #d97706;
+}
+
+
+
+.sobreNos-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.sobreNos-section {
+    display: flex;
+    justify-content: space-between;
+    width: 110%;
+}
+
+.content_sobreNos {
+    flex: 2.5;
+    padding-right: 20px;
+}
+
+.sobreNos_img {
+    flex: 3;
+    display: flex;
+}
+
+.sobreNos_img img {
+    max-width: 120%;
+    height: auto;
+}
+
+.content_sobreNos p {
+    text-align: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.reserva.escolha_carros { /* Margem do menu para os items a baixo */
+    margin-top: 150px
+}
+
+.reserva {
+    display: flex;
+    webkit-box-pack: justify;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+@media (max-width: 1190px) {
+    .wrapper {
+        padding: 0 15px;
+    }
+}
+
+.wrapper {
+    max-width: 1280px;
+}
+
+@media (max-width: 1090px) {
+    .reserva>.esquerda {
+        width: 40%;
+    }
+}
+
+.reserva>.esquerda {
+    max-width: 290px;
+}
+
+
+.reserva>.esquerda .filtros {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    margin-top: 0;
+    border-radius: 4px;
+    border: 1px solid #f5f5f5;
+    background-color: #f5f5f5;
+}
+
+.reserva>.esquerda .filtros>.titulo {
+    height: 40px; /* altura da caixa */
+    border-radius: 4px 4px 0 0; /* raio dos cantos */
+    background-color: #ede9fe; /* cor do fundo */
+    color: #000; /* cor do texto */
+    font-size: 15px; /* tamanho do texto */
+    font-weight: 700; /* espessura do texto */
+    line-height: 77px; /* espessura da linha */
+    padding: 19px 25px; /* espaçamento da caixa */
+    display: flex;
+    align-items: center;
+}
+
+.reserva>.esquerda form .filtros .resultados .item .label {
+    margin-left: 13px;
+    color: #000;
+    font-size: 13px;
+}
+
+
+
+
+
+
+
+
+.carros {
+    width: 100px;
+    height: 200px;
+    background-color: #854d0e;
+}
+
+
+
+
+/* Colunas wrapper */
+.wrapper > div {
+  border: 2px solid #ffa94d;
+  border-radius: 5px;
+  background-color: transparent;
+  padding: 1px;
+  color: #020617;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 400px 900px 200px;
+}

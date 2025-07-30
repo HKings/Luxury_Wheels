@@ -1,0 +1,122 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Editar Veículos{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+        <h1 class="mb-4">Alterar a imagem do Veículo</h1>
+
+        <!-- Bloco para exibir mensagens flash -->
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div id="message" class="{{ category }}">
+                                <ul class="flashes">
+                                    <p>{{ message }}</p>
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+        <form method="POST" action="{{ url_for('admin.replace_img', id=veiculo.id) }}" enctype="multipart/form-data" class="centered_edt">
+
+            <div class="vehicle-info">
+                <p class="card-title">
+                    <span class="desc">Marca: <span class="marca">{{ veiculo.brand }}</span></span>
+                    <span class="desc">Modelo: <span class="modelo">{{ veiculo.model }}</span></span>
+                    <span class="desc">Categoria: <span class="categoria">{{ veiculo.categoria.nome }}</span></span>
+                    <span class="desc">Ano: <span class="ano">{{ veiculo.year }}</span></span>
+                </p>
+            </div><br><br>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Imagens do Veículo:</label>
+                <div class="d-flex flex-wrap align-items-center">
+                    {% if imagens_veiculos %} <!-- No app.py já foi tratado para verificar se há imagens através do veiculo.imagens.split(',') if veiculo.imagens else [] -->
+                        {% for imagem in imagens_veiculos %}
+                            {% if imagem %} <!-- Verifica se a string da imagem não está vazia -->
+                                <div class="image-container mr-3 mb-3">
+                                    <img src="{{ url_for('static', filename=imagem) }}"
+                                         alt="Imagem do Veículo" class="img-thumbnail">
+
+                                    <br><br>
+                                    <a href="{{ url_for('admin.replace_img', id=veiculo.id, delete_image=imagem) }}"
+                                       class="btn danger-remover"
+                                       onclick="return confirm('Tem certeza que deseja remover esta imagem?')">Remover</a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %} <!-- caso veiculo.imagens.split(',') if veiculo.imagens else [] não houver imagens aparece a mensagem abaixo -->
+                        <br>
+                        <div class="alert alert-info" role="alert">
+                            Não existem imagens para este veículo!
+                        </div>
+                    {% endif %}
+
+                    <br><br>
+                    <label for="image" class="form-label">Inserir imagem:</label>
+                    <div class="image-upload">
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*" multiple>
+                        <!-- Botão que aparecerá apenas quando é introduzido o ficheiro, isto só é possível com a ajuda do hidden e da secção script (java script) -->
+                        <button type="button" id="clearButton" class="btn btn-warning hidden">Limpar Seleção</button>
+                    </div>
+                    <!-- secção que permite mostrar os ficheiros selecionados com ajuda da secção script (java script) -->
+                    <div id="selectedFiles" class="selected-files"></div>
+                </div>
+            </div>
+
+            <br><br>
+            <div class="button-group">
+                <!-- Botão que aparecerá apenas quando é introduzido o ficheiro, isto só é possível com a ajuda do hidden e da secção script (java script) -->
+                <button type="submit" id="updateButton" class="btn btn-primary hidden">Atualizar Veículo</button>
+                <a href="{{ url_for('admin.edit_type', id=veiculo.id) }}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('image');
+    const updateButton = document.getElementById('updateButton');
+    const clearButton = document.getElementById('clearButton');
+    const selectedFiles = document.getElementById('selectedFiles');
+
+    // Função para atualizar a visibilidade dos botões
+    function updateButtonsVisibility() {
+        if (fileInput.files && fileInput.files.length > 0) {
+            updateButton.classList.remove('hidden');
+            clearButton.classList.remove('hidden');
+
+            // Mostrar nomes dos arquivos selecionados
+            let fileNames = Array.from(fileInput.files)
+                .map(file => file.name)
+                .join(', ');
+            selectedFiles.textContent = `Arquivos selecionados: ${fileNames}`;
+        } else {
+            updateButton.classList.add('hidden');
+            clearButton.classList.add('hidden');
+            selectedFiles.textContent = '';
+        }
+    }
+
+    // Inicialmente esconde os botões
+    updateButton.classList.add('hidden');
+    clearButton.classList.add('hidden');
+
+    // Listener para mudanças no input file
+    fileInput.addEventListener('change', updateButtonsVisibility);
+
+    // Listener para o botão de limpar
+    clearButton.addEventListener('click', function() {
+        fileInput.value = ''; // Limpa o input
+        updateButtonsVisibility(); // Atualiza visibilidade dos botões
+    });
+});
+</script>
+{% endblock %}

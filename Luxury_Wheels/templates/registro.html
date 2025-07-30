@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Luxury Register{% endblock %}
+
+{% block stylesheets %} <!-- Bloco para trazer um estilo css específico -->
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_registro.css') }}">
+{% endblock %}
+
+{% block content %} <!-- Bloco de conteúdo da página -->
+
+<form method="post" action="/registro" autocomplete="off"> <!-- formulário de registro -->
+    <div class="titulo">
+        <h4>Registra-se na Luxury Wheels</h4>
+    </div>
+
+    <!-- Bloco caso exista mensagens para exibir ao utilizador -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div id="message" class="{{ category }}">
+                    <ul class="flashes">
+                        <p>{{ message }}</p> <!-- Contém armazenado as mensagens das categorias no auth.py-->
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div>
+        <img src="static/img/cover-removebg3.png" alt="Luxury Wheels Image" class="img_login_register"> <!-- Img da marca -->
+
+        <label for="nomeUtilizador">Nome</label>
+        <input type="text" name="nomeUtilizador" id="nomeUtilizador" placeholder="Introduza o nome" required />
+
+        <label for="apelidoUtilizador">Apelido</label>
+        <input type="text" name="apelidoUtilizador" id="apelidoUtilizador" placeholder="Introduza o apelido" required />
+
+        <label for="emailUtilizador">Email</label>
+        <input type="email" name="emailUtilizador" id="emailUtilizador" placeholder="Introduza o e-mail" required/>
+
+        <label for="telefoneUtilizador">Telefone</label>
+        <input type="tel" name="telefoneUtilizador" id="telefoneUtilizador" placeholder="Introduza o nº de telefone" required/>
+
+        <label for="data_nascimentoUtilizador">Data de Nascimento</label>
+        <input type="date" name="data_nascimentoUtilizador" id="data_nascimentoUtilizador" placeholder="Introduza a sua data de nascimento" required/>
+
+        <label for="moradaUtilizador">Morada</label>
+        <input type="text" name="moradaUtilizador" id="moradaUtilizador" placeholder="Introduza a sua morada" required/>
+
+        <label for="nifUtilizador">NIF (Contribuinte Fiscal)</label>
+        <input type="number" name="nifUtilizador" id="nifUtilizador" placeholder="Introduza o seu NIF" required/>
+
+        <label for="passwordUtilizador">Password</label>
+        <input type="password" name="passwordUtilizador" id="passwordUtilizador" placeholder="Introduza a sua senha" required/>
+
+        <label for="passwordUtilizadorConf">Password Confirmação</label>
+        <input type="password" name="passwordUtilizadorConf" id="passwordUtilizadorConf" placeholder="Volte a introduzir a sua senha" required/>
+
+        <input type="submit" value="Registrar"> <!-- O submit tem um comportamento de um botão de entrada de dados-->
+    </div>
+</form>
+
+
+{% endblock %}

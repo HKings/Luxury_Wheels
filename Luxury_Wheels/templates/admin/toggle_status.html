@@ -1,0 +1,88 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Alterar Status do Veículo{% endblock %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+        <h1 class="mb-4">Alterar Status do Veículo</h1>
+
+        <form method="POST" class="centered_edt">
+            <!-- Bloco para exibir mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="vehicle-info">
+                <p class="card-title">
+                    <span class="desc">Marca: <span class="marca">{{ vehicle.brand }}</span></span>
+                    <span class="desc">Modelo: <span class="modelo">{{ vehicle.model }}</span></span>
+                    <span class="desc">Categoria: <span class="categoria">{{ vehicle.categoria.nome }}</span></span>
+                    <span class="desc">Ano: <span class="ano">{{ vehicle.year }}</span></span>
+                </p>
+            </div>
+
+
+            <div class="status-section">
+                <h2>Status do Veículo</h2>
+                <!-- Caso o (if status_changed) for verdadeiro, o "*** disabled ***" está ativo e o (selected) será desativado, impedindo o usuário de interagir -->
+                <select name="status" class="section" {% if status_changed %}disabled{% endif %}>
+                    <!-- Caso o  (if status_changed) for falso, o "*** disabled ***" estará desativado e o (selected) estará ativo -->
+                    <option value="active" {% if temp_status %}selected{% endif %}>Ativo</option>
+                    <option value="maintenance" {% if not temp_status %}selected{% endif %}>Em Manutenção</option>
+                    <option value="reserved" {% if temp_is_reserved %}selected{% endif %}>Reservar</option>
+                </select>
+            </div><br><br>
+
+
+            {% if not temp_status and status_changed %}
+                <div class="maintenance-fields">
+                    <div class="field-group">
+                        <label for="maintenance_start">Data Início {% if temp_is_maintenance %}Manutenção{% else %}Reserva{% endif %}:</label>
+                        <input type="date" id="maintenance_start" name="maintenance_start"
+                               value="{{ vehicle.maintenance_start.strftime('%Y-%m-%d') if vehicle.maintenance_start else '' }}"
+                               required>
+
+                        <label for="maintenance_start_time">Hora Início:</label>
+                        <input type="time" id="maintenance_start_time" name="maintenance_start_time"
+                               value="{{ vehicle.maintenance_start.strftime('%H:%M') if vehicle.maintenance_start else '' }}"
+                               required>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="maintenance_end">Data Fim {% if temp_is_maintenance %}Manutenção{% else %}Reserva{% endif %}:</label>
+                        <input type="date" id="maintenance_end" name="maintenance_end"
+                               value="{{ vehicle.maintenance_end.strftime('%Y-%m-%d') if vehicle.maintenance_end else '' }}"
+                               required>
+
+                        <label for="maintenance_end_time">Hora Fim:</label>
+                        <input type="time" id="maintenance_end_time" name="maintenance_end_time"
+                               value="{{ vehicle.maintenance_end.strftime('%H:%M') if vehicle.maintenance_end else '' }}"
+                               required>
+                    </div>
+                </div><br>
+            {% endif %}
+
+            <div class="button-group">
+                {% if not status_changed %}
+                    <button type="submit" name="alterar_status" class="btn btn-primary">Alterar Status</button>
+                    <a href="{{ url_for('admin.edit_type', id=vehicle.id) }}" class="btn btn-secondary">Voltar atrás</a>
+                {% else %}
+                    <button type="submit" name="salvar_alteracoes" class="btn btn-success">Salvar Alterações</button>
+                    <a href="{{ url_for('admin.toggle_vehicle_status', id=vehicle.id) }}" class="btn btn-warning">Limpar os dados</a>
+                    <button type="submit" name="reverter_status" class="btn btn-secondary">Cancelar e Voltar Atrás</button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock %}
