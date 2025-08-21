@@ -99,7 +99,6 @@ python app.py
    - NIF: 123456789
    - Password: ********
 
-✅ Cliente registado com sucesso!
 ```
 
 ### **Pesquisa e Filtragem de Veículos**
@@ -113,7 +112,6 @@ python app.py
    - Transmissão: Manual/Automática
    - Preço por dia
 
-📋 Resultados apresentados em cards com paginação (10 por página)
 ```
 
 ### **Gestão Administrativa**
