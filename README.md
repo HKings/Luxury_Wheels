@@ -1,6 +1,6 @@
-# **Luxury Wheels - Sistema de Aluguer de Veículos**
+# **Luxury Wheels - Website de Aluguer de Veículos**
 
-Olá! O **Luxury Wheels** é um **sistema de gestão de aluguer de veículos** desenvolvido em Python com Flask que permite gerir aluguer de carros e motas. O sistema oferece funcionalidades para clientes assim como para administradores, proporcionando uma experiência de utilizador intuitiva e robusta para a empresa "Luxury Wheels".
+Olá! O **Luxury Wheels** é um **website de gestão de aluguer de veículos** desenvolvido em Python com Flask que permite gerir aluguer de carros e motas. O sistema oferece funcionalidades para clientes assim como para administradores, proporcionando uma experiência de utilizador intuitiva e robusta para a empresa "Luxury Wheels".
 
 ## **Funcionalidades**
 
